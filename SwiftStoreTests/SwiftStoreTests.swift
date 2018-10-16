@@ -51,9 +51,9 @@ class SwiftStoreTests: XCTestCase {
 
         let secs = Int64(3 * Double(NSEC_PER_SEC))
         let time = DispatchTime.now() + Double(secs) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: time, execute: { () -> Void in
-            let value = self.store["item1"]
-            print(value)
+        DispatchQueue.main.asyncAfter(deadline: time, execute: { [weak self] () -> Void in
+            let value = self?.store["item1"]
+            print(value ?? "No value")
         })
 
     }
@@ -68,7 +68,7 @@ class SwiftStoreTests: XCTestCase {
             store[key] = "r1-\(i)"
         }
         
-        var r2Keys = [String]()
+        let r2Keys = [String]()
         for i in (0 ..< 30) {
             let key = "r2-\(i)"
             r1Keys.append(key)
@@ -83,14 +83,14 @@ class SwiftStoreTests: XCTestCase {
         XCTAssertEqual(r2.count, 30, "Length of collected range should be 30.")
         
         // Delete collection of first keys
-        store.deleteCollection(keys: r1Keys)
+        _ = store.deleteCollection(keys: r1Keys)
         
         r1 = store.collect(key: "r1")
         
         XCTAssertEqual(r1.count, 0, "After deleting a collection, the length should be 0.")
         
         // Delete second set of keys
-        store.deleteCollection(keys: r2Keys)
+        _ = store.deleteCollection(keys: r2Keys)
         
         r2 = store.collect(key: "r2")
         
