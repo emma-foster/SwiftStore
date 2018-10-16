@@ -20,8 +20,6 @@
 #include <string.h>
 #include <string>
 
-using namespace std;
-
 namespace leveldb {
 
 class Slice {
