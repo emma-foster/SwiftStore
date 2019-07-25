@@ -31,6 +31,11 @@ class SwiftStoreTests: XCTestCase {
     }
 
     func testReads() {
+        store["apple"] = "ball"
+        for i in (0 ..< 1000) {
+              store["\(i)"] = "\(i)"
+        }
+        
         XCTAssert(store["apple"] == "ball", "Apple -> Ball")
         for i in (0 ..< 1000) {
             XCTAssert(store["\(i)"] == "\(i)", "Written value should be read")
